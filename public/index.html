@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Toque a sua musica!</title>
+            <link rel="icon" type="image/png" href="/assets/img/favicon-32x32.png" />
+            <link href="/assets/css/style.css" rel="stylesheet" />
+            <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+            <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        </head>
+        
+        <body>
+            
+            <div class="v3_24">
+                <div class="v1_3"></div>
+                <!--
+                    <div class="v1_7" id="open">
+                        <div class="v1_4"></div>
+                        <div class="v1_6"></div>
+                    </div>
+                -->
+                <div class="title-music" style="
+                        margin-top: -15px;
+                    ">Eu Tenho a Senha - Aquelas Coisas</div>
+                <div class="adicionar-btn" id="open" style="
+                margin-top: -5px;
+            "><img src="/assets/img/plus.png" />
+                    <span>Adicionar</span>
+                </div>
+                
+                <ul id="lista">
+
+                </ul>
+                
+            </div>
+
+            <div id="search" style="display:none;">
+                <div class="close"></div>
+                <input type="text" name="search-input" id="search-input" placeholder="Pesquise aqui ..." />
+                <button id="search-btn"><img src="/assets/img/search.png" /></button>
+
+                
+                
+                <ul class="data_lista-search">
+
+                </ul>
+                
+            </div>
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            <script>
+                $("#open").click(function(){
+                    $("#search").attr("style", "display:block;");
+                });
+                $(".close").click(function(){
+                    $("#search").attr("style", "display:none;");
+                });
+                function adicionar_musica(id){
+                    console.log(id);
+                    $.post("/ajax/add-musicas", {yt: id}, function(data){
+                        if(data.error == "yes"){
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.msg,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }else{
+                            $("div[data-id='"+id+"'] .plus_add-plus").attr("style", "background-image: url('/assets/img/check.png')");
+                            $.get("/ajax/get-musicas", function(data){
+                                $("#lista").html('');
+                                if(data[0]){
+                                    $(".v1_3").attr("style", "background-image: url('"+data[0].capa+"');")
+                                    $(".title-music").html(data[0].nome);
+                                }
+                                if(data[1]){
+                                    $("#lista").append(`
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+data[1].capa+`');"></div>
+                                                <div class="v3_9">`+data[1].nome+`</div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                                if(data[2]){
+                                    $("#lista").append(`
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+data[2].capa+`');"></div>
+                                                <div class="v3_9">`+data[2].nome+`</div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                                if(data[3]){
+                                    $("#lista").append(`
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+data[3].capa+`');"></div>
+                                                <div class="v3_9">`+data[3].nome+`</div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                                if(data[4]){
+                                    $("#lista").append(`
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+data[4].capa+`');"></div>
+                                                <div class="v3_9">`+data[4].nome+`</div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                                if(data[5]){
+                                    $("#lista").append(`
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+data[5].capa+`');"></div>
+                                                <div class="v3_9">`+data[5].nome+`</div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                            });
+                        }
+                    });
+                }
+                $.get("/ajax/get-musicas", function(data){
+                    if(data[0]){
+                        $(".v1_3").attr("style", "background-image: url('"+data[0].capa+"');")
+                        $(".title-music").html(data[0].nome);
+                    }
+                    if(data[1]){
+                        $("#lista").append(`
+                            <li class="lista_div">
+                                <div class="v1_8">
+                                    <div class="v3_10" style="background-image: url('`+data[1].capa+`');"></div>
+                                    <div class="v3_9">`+data[1].nome+`</div>
+                                </div>
+                            </li>
+                        `);
+                    }
+                    if(data[2]){
+                        $("#lista").append(`
+                            <li class="lista_div">
+                                <div class="v1_8">
+                                    <div class="v3_10" style="background-image: url('`+data[2].capa+`');"></div>
+                                    <div class="v3_9">`+data[2].nome+`</div>
+                                </div>
+                            </li>
+                        `);
+                    }
+                    if(data[3]){
+                        $("#lista").append(`
+                            <li class="lista_div">
+                                <div class="v1_8">
+                                    <div class="v3_10" style="background-image: url('`+data[3].capa+`');"></div>
+                                    <div class="v3_9">`+data[3].nome+`</div>
+                                </div>
+                            </li>
+                        `);
+                    }
+                    if(data[4]){
+                        $("#lista").append(`
+                            <li class="lista_div">
+                                <div class="v1_8">
+                                    <div class="v3_10" style="background-image: url('`+data[4].capa+`');"></div>
+                                    <div class="v3_9">`+data[4].nome+`</div>
+                                </div>
+                            </li>
+                        `);
+                    }
+                    if(data[5]){
+                        $("#lista").append(`
+                            <li class="lista_div">
+                                <div class="v1_8">
+                                    <div class="v3_10" style="background-image: url('`+data[5].capa+`');"></div>
+                                    <div class="v3_9">`+data[5].nome+`</div>
+                                </div>
+                            </li>
+                        `);
+                    }
+                });
+
+                setInterval(function(){
+                    $.get("/ajax/get-musicas", function(data){
+                        $("#lista").html('');
+                        if(data[0]){
+                            $(".v1_3").attr("style", "background-image: url('"+data[0].capa+"');")
+                            $(".title-music").html(data[0].nome);
+                        }
+                        if(data[1]){
+                            $("#lista").append(`
+                                <li class="lista_div">
+                                    <div class="v1_8">
+                                        <div class="v3_10" style="background-image: url('`+data[1].capa+`');"></div>
+                                        <div class="v3_9">`+data[1].nome+`</div>
+                                    </div>
+                                </li>
+                            `);
+                        }
+                        if(data[2]){
+                            $("#lista").append(`
+                                <li class="lista_div">
+                                    <div class="v1_8">
+                                        <div class="v3_10" style="background-image: url('`+data[2].capa+`');"></div>
+                                        <div class="v3_9">`+data[2].nome+`</div>
+                                    </div>
+                                </li>
+                            `);
+                        }
+                        if(data[3]){
+                            $("#lista").append(`
+                                <li class="lista_div">
+                                    <div class="v1_8">
+                                        <div class="v3_10" style="background-image: url('`+data[3].capa+`');"></div>
+                                        <div class="v3_9">`+data[3].nome+`</div>
+                                    </div>
+                                </li>
+                            `);
+                        }
+                        if(data[4]){
+                            $("#lista").append(`
+                                <li class="lista_div">
+                                    <div class="v1_8">
+                                        <div class="v3_10" style="background-image: url('`+data[4].capa+`');"></div>
+                                        <div class="v3_9">`+data[4].nome+`</div>
+                                    </div>
+                                </li>
+                            `);
+                        }
+                        if(data[5]){
+                            $("#lista").append(`
+                                <li class="lista_div">
+                                    <div class="v1_8">
+                                        <div class="v3_10" style="background-image: url('`+data[5].capa+`');"></div>
+                                        <div class="v3_9">`+data[5].nome+`</div>
+                                    </div>
+                                </li>
+                            `);
+                        }
+                    });
+                }, 20000);
+                $("#search-btn").click(function(){
+                    var search = $("#search-input").val();
+                    $.post("/ajax/get-musicas-api", {search: search}, function(data){
+                        if(data.error == "yes"){
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.msg,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }else{
+                            $('.data_lista-search').html('');
+                            data.forEach(element => {
+                                if(element.duration.totalSeconds <= 900){
+                                    $('.data_lista-search').append(`                    
+                                        <li class="lista_div">
+                                            <div class="v1_8">
+                                                <div class="v3_10" style="background-image: url('`+element.thumbnailUrl+`');"></div>
+                                                <div class="v3_9">`+element.album+' - '+element.title+`</div>
+
+                                                <div class="plus_add" onclick="adicionar_musica('`+element.youtubeId+`')" data-id="`+element.youtubeId+`">
+                                                    <div class="plus_add-background"></div>
+                                                    <div class="plus_add-plus"></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+        </body>
+    </html>

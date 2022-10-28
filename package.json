@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "node-localstorage": "^2.2.1",
+    "node-youtube-music": "^0.7.0"
+  }
+}
